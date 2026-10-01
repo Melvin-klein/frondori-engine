@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "frondori-engine"
+version = "0.4.0"
+description = "Frondori research environments: the common contract (PettingZoo API), registry, rendering format and contract tests. Environments are installed separately (frondori-football, frondori-kitchen...)."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "gymnasium>=1.0",
+    "pettingzoo>=1.24",
+    "msgpack>=1.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[tool.setuptools]
+packages = ["frondori_engine"]
