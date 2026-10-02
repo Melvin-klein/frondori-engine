@@ -1,7 +1,7 @@
 # frondori-engine
 
 Le contrat commun des environnements de recherche de
-[Frondori](https://frondori.ai), au format [PettingZoo](https://pettingzoo.farama.org/).
+Frondori, au format [PettingZoo](https://pettingzoo.farama.org/).
 
 **Ce paquet ne contient aucun environnement.** Chacun est un paquet à part,
 dans son propre dépôt, qu'on installe seulement s'il nous intéresse :
@@ -72,3 +72,18 @@ python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 python -m pytest
 ```
+
+## Publier une version
+
+1. Mettre à jour `version` dans `pyproject.toml` et commiter.
+2. Pousser un tag du même numéro : `git tag v0.1.0 && git push origin v0.1.0`.
+
+La CI (`.github/workflows/ci.yml`) teste, construit et publie sur PyPI ; elle
+refuse un tag qui ne correspond pas à la version. Publication par *Trusted
+Publishing*, sans token : à configurer une fois sur PyPI (projet `frondori-engine` >
+Publishing > trusted publisher GitHub : ce dépôt, workflow `ci.yml`,
+environnement `pypi`).
+
+À publier EN PREMIER : les environnements et le SDK en dépendent.
+
+Licence : MIT.
