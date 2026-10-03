@@ -31,6 +31,8 @@ dependencies = [
 ]
 
 [project.urls]
+Homepage = "https://frondori.com"
+Documentation = "https://frondori.com/documentation/train-locally"
 Source = "https://github.com/Melvin-klein/frondori-engine"
 Issues = "https://github.com/Melvin-klein/frondori-engine/issues"
 
