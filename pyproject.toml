@@ -30,6 +30,10 @@ dependencies = [
     "msgpack>=1.0",
 ]
 
+[project.urls]
+Source = "https://github.com/Melvin-klein/frondori-engine"
+Issues = "https://github.com/Melvin-klein/frondori-engine/issues"
+
 [project.optional-dependencies]
 dev = ["pytest>=7"]
 
