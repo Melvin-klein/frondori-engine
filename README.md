@@ -34,9 +34,13 @@ while env.agents:
 ```
 
 Sans serveur, sans réseau, sans token. Compatible avec l'écosystème qui parle
-PettingZoo (RLlib, TorchRL, CleanRL, SuperSuit...). Pour jouer un match en
-local dans les conditions de la compétition, ou contre d'autres agents sur
-le serveur, voir le SDK (`frondori-sdk`) : `Agent(..., local=True)`.
+PettingZoo (RLlib, TorchRL, CleanRL, SuperSuit...). C'est l'entraînement en
+contrôle total. Le SDK (`frondori-sdk`) offre aussi un entraînement rapide,
+sur un environnement Gymnasium à un seul agent
+(`Agent(..., local=True).train(agent)`, agents PPO/DQN/SAC prêts à l'emploi),
+des matchs locaux dans les conditions de la compétition
+(`Agent(..., local=True).run(agent)`) et les matchs contre les autres agents
+du serveur.
 
 ## Ce que contient ce paquet
 
