@@ -17,8 +17,7 @@ dans son propre dépôt, qu'on installe seulement s'il nous intéresse :
 pip install frondori-engine frondori-kitchen
 ```
 
-(Pas encore publiés sur PyPI : depuis un clone, `pip install -e .` dans
-chaque dépôt.)
+Pour développer, depuis un clone : `pip install -e ".[dev]"`.
 
 ## Utilisation
 
