@@ -56,7 +56,7 @@ def check_observations_fit_their_space(env_id: str, steps: int = 500) -> None:
     for _ in range(steps):
         for agent, observation in observations.items():
             assert env.observation_space(agent).contains(observation), (
-                f"{env_id} : l'observation de {agent} sort de son observation_space : {observation!r}"
+                f"{env_id}: the observation of {agent} is outside its observation space: {observation!r}"
             )
         if not env.agents:
             break
@@ -69,16 +69,16 @@ def check_metadata(env_id: str) -> None:
     metadata = env.metadata
     for key in ("title", "description", "documentation"):
         assert isinstance(metadata.get(key), str) and metadata[key].strip(), (
-            f"{env_id} : metadata[{key!r}] (texte non vide) est requis"
+            f"{env_id}: metadata[{key!r}] (non-empty text) is required"
         )
-    assert (metadata.get("render_fps") or 0) > 0, f"{env_id} : metadata['render_fps'] (pas par seconde) est requis"
+    assert (metadata.get("render_fps") or 0) > 0, f"{env_id}: metadata['render_fps'] (steps per second) is required"
     assert (metadata.get("compute_budget_ms") or 0) > 0, (
-        f"{env_id} : metadata['compute_budget_ms'] (temps de calcul par action, en ms) est requis"
+        f"{env_id}: metadata['compute_budget_ms'] (compute time per action, in ms) is required"
     )
-    assert metadata.get("ranking") in RANKINGS, f"{env_id} : metadata['ranking'] doit valoir l'un de {RANKINGS}"
+    assert metadata.get("ranking") in RANKINGS, f"{env_id}: metadata['ranking'] must be one of {RANKINGS}"
     if metadata["ranking"] == "elo":
-        assert len(env.possible_agents) == 2, f"{env_id} : un classement ELO n'a de sens qu'en duel (2 agents)"
-    assert "scene" in metadata.get("render_modes", []), f"{env_id} : render_mode 'scene' est requis"
+        assert len(env.possible_agents) == 2, f"{env_id}: an ELO ranking only makes sense for a duel (2 agents)"
+    assert "scene" in metadata.get("render_modes", []), f"{env_id}: render_mode 'scene' is required"
 
 
 def check_spaces_can_be_sent(env_id: str) -> None:
@@ -99,7 +99,7 @@ def check_neutral_action(env_id: str) -> None:
     for agent in env.possible_agents:
         space = env.action_space(agent)
         assert space.contains(wire.neutral_action(space)), (
-            f"{env_id} : l'action neutre de {agent} sort de son action_space"
+            f"{env_id}: the neutral action of {agent} (the zero of its space) is outside its action space"
         )
     env.step({agent: wire.neutral_action(env.action_space(agent)) for agent in env.agents})
 
@@ -112,10 +112,10 @@ def check_scene(env_id: str) -> None:
     scene = env.render()
 
     json.dumps(scene)
-    assert scene["width"] > 0 and scene["height"] > 0, f"{env_id} : la scène doit avoir une largeur et une hauteur"
-    assert scene["shapes"], f"{env_id} : la scène est vide"
+    assert scene["width"] > 0 and scene["height"] > 0, f"{env_id}: the scene needs a width and a height"
+    assert scene["shapes"], f"{env_id}: the scene is empty"
     unknown = {shape["type"] for shape in scene["shapes"]} - SHAPE_TYPES
-    assert not unknown, f"{env_id} : primitives de scène inconnues {unknown} (attendu : {SHAPE_TYPES})"
+    assert not unknown, f"{env_id}: unknown scene shapes {unknown} (expected: {SHAPE_TYPES})"
 
 
 __all__ = [

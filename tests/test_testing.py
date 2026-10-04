@@ -47,7 +47,7 @@ class NoBudget(RockPaperScissorsEnv):
     ("broken", "check", "message"),
     [
         (SpacesRecreatedOnEveryCall, check_pettingzoo_api, "same space object"),
-        (ObservationOutOfItsSpace, check_observations_fit_their_space, "sort de son observation_space"),
+        (ObservationOutOfItsSpace, check_observations_fit_their_space, "outside its observation space"),
         (EloWithThreeAgents, check_metadata, "duel"),
         (NoBudget, check_metadata, "compute_budget_ms"),
     ],

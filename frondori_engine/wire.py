@@ -36,7 +36,7 @@ def space_to_spec(space: spaces.Space) -> dict:
         }
     if isinstance(space, spaces.Dict):
         return {"type": "dict", "spaces": {key: space_to_spec(sub) for key, sub in space.spaces.items()}}
-    raise TypeError(f"space non supporté par le protocole : {type(space).__name__}")
+    raise TypeError(f"space not supported by the protocol: {type(space).__name__} (only Box, Discrete, MultiDiscrete, Dict)")
 
 
 def to_wire(value):
@@ -58,17 +58,17 @@ def from_wire(space: spaces.Space, value):
     l'environnement sans vérification."""
     if isinstance(space, spaces.Dict):
         if not isinstance(value, dict) or set(value) != set(space.spaces):
-            raise ValueError(f"attendu un dict avec les clés {sorted(space.spaces)}")
+            raise ValueError(f"expected a dict with the keys {sorted(space.spaces)}")
         return {key: from_wire(sub, value[key]) for key, sub in space.spaces.items()}
     if isinstance(space, spaces.Discrete):
         # `bool` est un sous-type d'`int` en Python : refusé explicitement.
         if isinstance(value, bool) or not isinstance(value, int):
-            raise ValueError("attendu un entier")
+            raise ValueError("expected an integer")
         action = np.int64(value)
     else:
         action = np.asarray(value, dtype=space.dtype)
     if not space.contains(action):
-        raise ValueError("valeur hors de l'action_space")
+        raise ValueError("value outside the action space")
     return action
 
 
@@ -86,4 +86,4 @@ def neutral_action(space: spaces.Space):
         return np.array(space.start, dtype=space.dtype)
     if isinstance(space, spaces.Box):
         return np.clip(np.zeros(space.shape), space.low, space.high).astype(space.dtype)
-    raise TypeError(f"space non supporté par le protocole : {type(space).__name__}")
+    raise TypeError(f"space not supported by the protocol: {type(space).__name__} (only Box, Discrete, MultiDiscrete, Dict)")

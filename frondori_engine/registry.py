@@ -57,9 +57,9 @@ def register(id: str, entry_point: Callable[..., ParallelEnv], package: str | No
     """Enregistre un environnement. `kwargs` : paramètres par défaut passés à
     `entry_point`, surchargeables au moment de `make`."""
     if not _ID_PATTERN.match(id):
-        raise ValueError(f"identifiant invalide {id!r} : format attendu 'nom-vN' (ex. 'football-v0')")
+        raise ValueError(f"invalid id {id!r}: expected 'name-vN' (e.g. 'football-v0')")
     if id in _registry:
-        raise ValueError(f"environnement {id!r} déjà enregistré ({_registry[id].package or 'register()'})")
+        raise ValueError(f"environment {id!r} is already registered ({_registry[id].package or 'register()'})")
     _registry[id] = EnvSpec(id=id, entry_point=entry_point, kwargs=kwargs, package=package)
 
 
@@ -67,8 +67,8 @@ def make(id: str, **kwargs: Any) -> ParallelEnv:
     try:
         spec = get_spec(id)
     except KeyError:
-        known = ", ".join(registered_ids()) or "(aucun : installer un paquet d'environnement, ex. frondori-kitchen)"
-        raise KeyError(f"environnement inconnu {id!r} ; disponibles : {known}") from None
+        known = ", ".join(registered_ids()) or "(none: install an environment package, e.g. frondori-kitchen)"
+        raise KeyError(f"unknown environment {id!r}; available: {known}") from None
     return spec.entry_point(**{**spec.kwargs, **kwargs})
 
 

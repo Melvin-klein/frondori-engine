@@ -69,7 +69,7 @@ class _Session:
             return self._start(request["env_id"], request["seed"])
         if command == "step":
             return self._step(request["actions"])
-        raise ValueError(f"commande inconnue : {command!r}")
+        raise ValueError(f"unknown command: {command!r}")
 
     def _start(self, env_id: str, seed: int) -> dict:
         self._env = frondori_engine.make(env_id, render_mode="scene")
@@ -88,7 +88,7 @@ class _Session:
             value = received.get(agent)
             try:
                 if value is None:
-                    raise ValueError("pas d'action")
+                    raise ValueError("no action")
                 actions[agent] = wire.from_wire(space, value)
             except (ValueError, TypeError):
                 actions[agent] = wire.neutral_action(space)
@@ -116,15 +116,15 @@ def _describe(env_id: str) -> dict:
     env = frondori_engine.make(env_id)
     tick_rate = env.metadata.get("render_fps")
     if not tick_rate or tick_rate <= 0:
-        raise ValueError(f"{env_id} : metadata['render_fps'] (cadence en pas/seconde) est requis")
+        raise ValueError(f"{env_id}: metadata['render_fps'] (pace, in steps per second) is required")
     ranking = env.metadata.get("ranking")
     if ranking not in RANKINGS:
-        raise ValueError(f"{env_id} : metadata['ranking'] doit valoir l'un de {RANKINGS}")
+        raise ValueError(f"{env_id}: metadata['ranking'] must be one of {RANKINGS}")
     if ranking == "elo" and len(env.possible_agents) != 2:
-        raise ValueError(f"{env_id} : un classement ELO n'a de sens qu'en duel (2 agents)")
+        raise ValueError(f"{env_id}: an ELO ranking only makes sense for a duel (2 agents)")
     budget = env.metadata.get("compute_budget_ms")
     if not budget or budget <= 0:
-        raise ValueError(f"{env_id} : metadata['compute_budget_ms'] (temps de calcul par action, en ms) est requis")
+        raise ValueError(f"{env_id}: metadata['compute_budget_ms'] (compute time per action, in ms) is required")
     return {
         "agents": list(env.possible_agents),
         "tick_rate": float(tick_rate),
